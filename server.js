@@ -18,6 +18,7 @@ app.use(cors({
     }
     return callback(null, true);
   },
+  methods:['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
 app.use(bodyParser.json());
