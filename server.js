@@ -9,11 +9,7 @@ const app=express();
 
 
 const allowedOrigins = ["http://localhost:5173"];
-app.use(cors({
-  origin: '*',
-  credentials: true, 
-  methods:["GET","POST","PUT","DELETE"]
-}));
+app.use(cors('*'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
