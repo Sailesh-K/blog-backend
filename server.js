@@ -8,8 +8,12 @@ const cookieParser = require("cookie-parser");
 const app=express();
 
 
-const allowedOrigins = ["http://localhost:5173"];
-app.use(cors('*'));
+const corsOptions = {
+    origin: 'https://blog-front-end-11.netlify.app', // Specify your frontend URL
+    credentials: true, // Allow credentials
+};
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
