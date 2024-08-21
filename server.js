@@ -20,7 +20,7 @@ app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 mongoose
-.connect('mongodb+srv://guvi:guvi@blog.92eln.mongodb.net/')
+.connect('mongodb+srv://guvi:guvi@cluster0.htuqr.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0')
 .then(()=>{
     console.log("Connected");
 })
