@@ -9,7 +9,7 @@ const app=express();
 
 
 const corsOptions = {
-    origin: 'https://blog-front-end-11.netlify.app', 
+    origin: 'https://master--blog-front-end-11.netlify.app', 
     credentials: true, 
 };
 app.use(cors(corsOptions));
