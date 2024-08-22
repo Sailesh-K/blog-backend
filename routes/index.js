@@ -119,7 +119,7 @@ router.get('/post/:id',async (req,res)=>{
     res.json(post);
 })
 
-router.put('/post',uploadMiddleware.single('file'),async (req,res)=>{
+router.put('/post/:id',uploadMiddleware.single('file'),async (req,res)=>{
     let newPath=null;
     if(req.file){
         const {originalname,path}=req.file;
@@ -131,19 +131,26 @@ router.put('/post',uploadMiddleware.single('file'),async (req,res)=>{
 
     const {token}=req.cookies;
     jwt.verify(token,secret,{},async (err,info)=>{
-        if (err) throw err;
-        const {id,title,summary,content}=req.body;
-        const post=await Post.findById(id);
-        const isAuthor=JSON.stringify(post.author)===JSON.stringify(info.id);
-        if(!isAuthor){
-            return res.status(400).json('you are not the author')
-        }
-            post.title=title,
-            post.summary=summary,
-            post.content=content,
-            post.cover=newPath?newPath:post.cover,
+        if (err) return res.status(401).json({ message: 'Unauthorized' });
+        const {id}=req.params;
+        const {title,summary,content}=req.body;
+        try {
+            const post = await Post.findById(id);
+            if (!post) return res.status(404).json({ message: 'Post not found' });
+
+            const isAuthor = JSON.stringify(post.author) === JSON.stringify(info.id);
+            if (!isAuthor) return res.status(403).json({ message: 'You are not the author' });
+
+            post.title = title;
+            post.summary = summary;
+            post.content = content;
+            if (newPath) post.cover = newPath;
+
             await post.save();
             res.status(200).json(post);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }); 
 });
 
