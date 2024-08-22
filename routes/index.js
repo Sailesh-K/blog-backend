@@ -26,7 +26,10 @@ router.post('/register',async (req,res)=>{
         const user=new User({username,email,password:hashedPass});
         await user.save();
         const token=genToken(user);
-        return res.status(200).cookie('token', token).json({
+        return res.status(200).cookie('token', token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None',}).json({
             id:user._id,
             username:user.username
         });
@@ -48,7 +51,10 @@ router.post('/login',async (req,res)=>{
            return res.status(400).send("Incorrect Password!");
         }
         const token= genToken(user);
-        return res.status(200).cookie('token', token).json({
+        return res.status(200).cookie('token', token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None',}).json({
             id:user._id,
             username:user.username
         });
