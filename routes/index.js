@@ -6,12 +6,13 @@ const jwt=require("jsonwebtoken");
 const fs=require('fs');
 const cookieParser = require("cookie-parser");
 const multer=require("multer");
+require("dotenv").config();
 const uploadMiddleware=multer({dest:'uploads/', limits: { fileSize: 10 * 1024 * 1024 }});
 const router=express.Router();
 
 router.use(cookieParser());
 
-const secret='GIGITY';
+const secret=process.env.SECRET;
 
 const genToken=(user)=>{
     return jwt.sign({username:user.username,id:user._id},secret,{

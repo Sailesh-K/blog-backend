@@ -3,10 +3,10 @@ const mongoose=require("mongoose");
 const bodyParser = require("body-parser");
 const routes = require("./routes/index");
 const cors=require("cors");
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
 const app=express();
-
 
 const corsOptions = {
     origin: 'https://master--blog-front-end-11.netlify.app', 
@@ -21,7 +21,7 @@ app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 mongoose
-.connect('mongodb+srv://guvi:guvi@cluster0.htuqr.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0')
+.connect(process.env.DB_URI)
 .then(()=>{
     console.log("Connected");
 })
